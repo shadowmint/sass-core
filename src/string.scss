@@ -1,3 +1,6 @@
+/// Global variable to represent whitespace
+$__coreStrWS: " \t";
+
 /// Join a sequence of strings into one string
 /// @param $values The set of strings, eg. StrJoin("1", "2", "3")
 @function StrJoin($values...) {
@@ -6,4 +9,85 @@
     $rtn: "#{$rtn}#{$value}";
   }
   @return unquote($rtn);
+}
+
+/// Join a sequence of strings into one string
+/// @param $value The value to split, eg. "1, 2, 3"
+/// @param $delim The value to split with, eg. ","
+@function StrSplit($value, $delim) {
+  $rtn: ();
+  $done: false;
+  $left: $value;
+  $size: str-length($delim);
+  @while not $done {
+    $index: str-index($left, $delim);
+    @if $index == null {
+      $done: true;
+    }
+    @else {
+      $rtn: append($rtn, StrTrim(str-slice($left, 0, $index - 1)));
+      $left: str-slice($left, $index + $size);
+    }
+  }
+  $rtn: append($rtn, StrTrim($left));
+  @return $rtn;
+}
+
+/// Trim whitespace from around a string value on the left
+/// @param $value The value to trim, eg. "   1 "
+/// @return The trimmed valued, eg. "1 "
+@function StrLTrim($value) {
+  $i: 0;
+  $offset: 0;
+  $end: str-length($value);
+  $done: false;
+  @while not $done {
+    $part: str-slice($value, $i, $i);
+    $index: str-index($__coreStrWS, $part);
+    @if $index == null {
+      $offset: $i;
+      $done: true;
+    }
+    @if $i == $end {
+      $done: true;
+    }
+    @else {
+      $i: $i + 1;
+    }
+  }
+  @return str-slice($value, $offset);
+}
+
+/// Trim whitespace from around a string value on the right
+/// @param $value The value to trim, eg. "   1 "
+/// @return The trimmed valued, eg. "   1"
+@function StrRTrim($value) {
+  $i: str-length($value);
+  $offset: 0;
+  $end: 0;
+  $done: false;
+  @while not $done {
+    $part: str-slice($value, $i, $i);
+    $index: str-index($__coreStrWS, $part);
+    @if $index == null {
+      $offset: $i;
+      $done: true;
+    }
+    @if $i == $end {
+      $done: true;
+    }
+    @else {
+      $i: $i - 1;
+    }
+  }
+  @return str-slice($value, 0, $offset);
+}
+
+/// Trim whitespace from around a string value
+/// @param $value The value to trim, eg. "   1 "
+/// @return The trimmed valued, eg. "1"
+@function StrTrim($value) {
+  $trimmed: StrLTrim($value);
+  $trimmed: StrRTrim($trimmed);
+  @return $trimmed;
 }

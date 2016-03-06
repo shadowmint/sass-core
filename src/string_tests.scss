@@ -11,6 +11,84 @@
   @return TestEnd();
 }
 
+@function test_str_ltrim() {
+  $setup: Test(test_str_ltrim);
 
+  $trimmed: StrLTrim("foo");
+  $test: Assert($trimmed == "foo");
+
+  $trimmed: StrLTrim("foo   ");
+  $test: Assert($trimmed == "foo   ");
+
+  $trimmed: StrLTrim("    foo");
+  $test: Assert($trimmed == "foo");
+
+  $trimmed: StrLTrim("  \tfoo\t   ");
+  $test: Assert($trimmed == "foo\t   ");
+
+  @return TestEnd();
+}
+
+@function test_str_rtrim() {
+  $setup: Test(test_str_rtrim);
+
+  $trimmed: StrRTrim("foo");
+  $test: Assert($trimmed == "foo");
+
+  $trimmed: StrRTrim("foo   ");
+  $test: Assert($trimmed == "foo");
+
+  $trimmed: StrRTrim("    foo");
+  $test: Assert($trimmed == "    foo");
+
+  $trimmed: StrRTrim("  \tfoo\t   ");
+  $test: Assert($trimmed == "  \tfoo");
+
+  @return TestEnd();
+}
+
+@function test_str_trim() {
+  $setup: Test(test_str_trim);
+
+  $trimmed: StrTrim("foo");
+  $test: Assert($trimmed == "foo");
+
+  $trimmed: StrTrim("foo   ");
+  $test: Assert($trimmed == "foo");
+
+  $trimmed: StrTrim("    foo");
+  $test: Assert($trimmed == "foo");
+
+  $trimmed: StrTrim("  \tfoo\t   ");
+  $test: Assert($trimmed == "foo");
+
+  @return TestEnd();
+}
+
+@function test_str_split() {
+  $setup: Test(test_str_split);
+
+  $split: StrSplit("4, 5, 6", ", ");
+  $test: Assert(length($split) == 3);
+  $test: Assert(nth($split, 1) == "4");
+  $test: Assert(nth($split, 2) == "5");
+  $test: Assert(nth($split, 3) == "6");
+
+  $split: StrSplit("4, 5, 6", ",");
+  $test: Assert(length($split) == 3);
+  $test: Assert(nth($split, 1) == "4");
+  $test: Assert(nth($split, 2) == "5");
+  $test: Assert(nth($split, 3) == "6");
+
+  $split: StrSplit("4, 5, 6", "xxxx");
+  $test: Assert(length($split) == 1);
+
+  @return TestEnd();
+}
+
+@debug test_str_rtrim();
+@debug test_str_ltrim();
+@debug test_str_trim();
 @debug test_str_join();
+@debug test_str_split();
 @debug TestSuiteEnd();
