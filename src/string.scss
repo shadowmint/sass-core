@@ -1,0 +1,9 @@
+/// Join a sequence of strings into one string
+/// @param $values The set of strings, eg. StrJoin("1", "2", "3")
+@function StrJoin($values...) {
+  $rtn: "";
+  @each $value in $values {
+    $rtn: "#{$rtn}#{$value}";
+  }
+  @return unquote($rtn);
+}

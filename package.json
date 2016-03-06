@@ -1,11 +1,11 @@
 {
-  "name": "sass-TEMPLATE",
+  "name": "sass-core",
   "version": "0.0.1",
-  "description": "TEMPLATE",
+  "description": "Core functions for sass packges",
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/shadowmint/sass-TEMPLATE.git"
+    "url": "git+https://github.com/shadowmint/sass-core.git"
   },
   "files": [
     "index.js",
@@ -15,8 +15,8 @@
   "author": "douglas.linder@gmail.com",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/shadowmint/sass-TEMPLATE/issues"
+    "url": "https://github.com/shadowmint/sass-core/issues"
   },
-  "homepage": "https://github.com/shadowmint/sass-TEMPLATE",
+  "homepage": "https://github.com/shadowmint/sass-core",
   "dependencies": {}
 }

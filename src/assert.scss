@@ -1,0 +1,62 @@
+/// Global variable to represent the current test suite.
+$__assertState: (
+
+  /// Currently running test name
+  testName: "NONE",
+
+  /// Number of failures in this suite
+  testFailures: 0,
+
+  /// Count of tests run
+  testCount: 0,
+
+  /// Is the current test a fail?
+  testFailed: 0
+);
+
+/// Setup a test suite
+@function TestSuite() {
+  $__assertState: map-merge($__assertState, (testCount: 0, testFailures: 0)) !global;
+  @return '--------------------------------------------------------------------';
+}
+
+/// Setup a test
+/// @param $name The name of the test
+@function Test($name) {
+  $__assertState: map-merge($__assertState, (testName: $name, testFailed: 0)) !global;
+  @return false;
+}
+
+/// Assert a value in a test
+/// @param $truth Some true value
+@function Assert($truth) {
+  @if not($truth) {
+    $__assertState: map-merge($__assertState, (testFailed: 1)) !global;
+  }
+  @return false;
+}
+
+/// Finish a start
+@function TestEnd() {
+  $failed: map-get($__assertState, testFailed);
+  $test: map-get($__assertState, testName);
+  $fails: map-get($__assertState, testFailures);
+  $count: map-get($__assertState, testCount);
+  $rtn: "";
+  @if $failed == 1 {
+    $rtn: "#{$test}: FAILED";
+    $__assertState: map-merge($__assertState, (testCount: $count + 1, testFailures: $fails + 1)) !global;
+  }
+  @else {
+    $rtn: "#{$test}: OK";
+    $__assertState: map-merge($__assertState, (testCount: $count + 1)) !global;
+  }
+  @return $rtn;
+}
+
+/// Finish a test suite
+@function TestSuiteEnd() {
+  $fails: map-get($__assertState, testFailures);
+  $count: map-get($__assertState, testCount);
+  @return '#{$count - $fails}/#{$count} passed';
+}
