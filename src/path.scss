@@ -1,0 +1,32 @@
+@import "./string.scss";
+@import "./set.scss";
+
+/// Given a path, return the directory part without a trailing slash.
+/// @param $path A path, eg. "foo/bar/thing.scss"
+/// @return The path component, eg. "foo/bar"
+@function PathDir($path) {
+  @debug $path;
+  $parts: StrSplit($path, "/");
+  @debug($parts);
+  $parts: SetPop($parts);
+  @debug($parts);
+  @debug(length($parts));
+  @return StrJoin($parts, "/");
+}
+
+/// Given a path, return the file part
+/// @param $path A path, eg. "foo/bar/thing.scss"
+/// @param $withExt Return the extension too, defaults to true.
+/// @return The file component, eg. "thing.scss" or "thing"
+@function PathFile($path, $withExt) {
+  @return "";
+}
+
+/// Replace the file in a path with a different file / extension
+/// @param $path A path, eg. "foo/bar/thing.scss"
+/// @param $filename The replacement filename, eg. "foo"
+/// @param $ext The replacement extension, eg. "css"
+/// @return The file component, eg. "foo/bar/foo.css"
+@function PathReplace($path, $filename, $ext) {
+  @return "";
+}

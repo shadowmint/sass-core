@@ -5,7 +5,7 @@
 @function test_str_join() {
   $setup: Test(test_str_join);
 
-  $joined: StrJoin("4", "5", "6");
+  $joined: StrJoin(("4", "5", "6"));
   $test: Assert($joined == "456");
 
   @return TestEnd();

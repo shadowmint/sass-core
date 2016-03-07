@@ -1,0 +1,84 @@
+@import "./assert.scss";
+@import "./set.scss";
+@debug TestSuite();
+
+@function test_set_equals() {
+  $setup: Test(test_set_equals);
+
+  $test: Assert(SetEquals(null, null));
+  $test: Assert(SetEquals((1, 2, 3, 4), (1, 2, 3, 4)));
+  $test: Assert(SetEquals((4), (4)));
+
+  $test: Assert(not SetEquals((1, 2, 3, 4), (1, 2, 4, 4)));
+  $test: Assert(not SetEquals((1, 2, 3, 4), (1, 2)));
+  $test: Assert(not SetEquals((1, 2, 3, 4), null));
+
+  @return TestEnd();
+}
+
+@function test_set_push() {
+  $setup: Test(test_set_push);
+
+  $out: SetPush((1, 2), 3);
+  $test: Assert(SetEquals($out, (1, 2, 3)));
+
+  $out: SetPush(null, 1);
+  $test: Assert($out == (1));
+
+  $out: SetPush((), 1);
+  $test: Assert($out == (1));
+  @return TestEnd();
+}
+
+@function test_set_unshift() {
+  $setup: Test(test_set_unshift);
+
+  $out: SetUnshift((1, 2), 3);
+  $test: Assert(SetEquals($out, (3, 1, 2)));
+
+  $out: SetUnshift(null, 1);
+  $test: Assert($out == (1));
+
+  $out: SetUnshift((), 1);
+  $test: Assert($out == (1));
+  @return TestEnd();
+}
+
+@function test_set_pop() {
+  $setup: Test(test_set_pop);
+
+  $value: SetPop((1, 2, 3, 4), true);
+  $out: SetPop((1, 2, 3, 4));
+  $test: Assert($value == 4);
+  $test: Assert(SetEquals($out, (1, 2, 3)));
+
+  $value: SetPop((1), true);
+  $out: SetPop((1));
+  $test: Assert($value == 1);
+  $test: Assert(SetEquals($out, null));
+
+  @return TestEnd();
+}
+
+@function test_set_shift() {
+  $setup: Test(test_set_shift);
+
+  $value: SetShift((1, 2, 3, 4), true);
+  $out: SetShift((1, 2, 3, 4));
+  $test: Assert($value == 1);
+  $test: Assert(SetEquals($out, (2, 3, 4)));
+
+  $value: SetPop((1), true);
+  $out: SetPop((1));
+  $test: Assert($value == 1);
+  $test: Assert(SetEquals($out, null));
+
+  @return TestEnd();
+}
+
+@debug test_set_equals();
+@debug test_set_unshift();
+@debug test_set_shift();
+@debug test_set_pop();
+@debug test_set_push();
+@debug TestSuiteEnd();

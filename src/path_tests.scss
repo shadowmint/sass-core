@@ -1,0 +1,16 @@
+@import "./assert.scss";
+@import "./path.scss";
+@debug TestSuite();
+
+@function test_path_dir() {
+  $setup: Test(test_path_dir);
+
+  $out: PathDir("foo/bar/thing.txt");
+  @debug $out;
+  $test: Assert($out == "foo/bar");
+
+  @return TestEnd();
+}
+
+@debug test_path_dir();
+@debug TestSuiteEnd();

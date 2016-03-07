@@ -1,0 +1,102 @@
+/// Check if two sets are equal
+/// @param $a The first set.
+/// @param $b The second set.
+/// @return True if all the elements and length of a and b are the same.
+@function SetEquals($a, $b) {
+  $rtn: false;
+  @if ($a == null) and ($b == null) {
+    $rtn: true;
+  }
+  @else {
+    @if ($a != null) and ($b != null) {
+      @if length($a) == length($b) {
+        $rtn: true;
+        @for $i from 1 to (length($a) + 1) {
+          @if nth($a, $i) != nth($b, $i) {
+            $rtn: false;
+          }
+        }
+      }
+    }
+  }
+  @return $rtn;
+}
+
+/// Push a value onto the end of a set and return it.
+/// @param $set The set to manipulate.
+/// @param $value The value to add to the end.
+@function SetPush($set, $value) {
+  $rtn: null;
+  @if ($set == null) or (length($set) == 0) {
+    $rtn: ($value);
+  }
+  @else {
+    $rtn: append($set, $value);
+  }
+  @return $rtn;
+}
+
+/// Push a value onto the start of a set and return it.
+/// @param $set The set to manipulate.
+/// @param $value The value to add to the end.
+@function SetUnshift($set, $value) {
+  $rtn: null;
+  @if ($set == null) or (length($set) == 0) {
+    $rtn: ($value);
+  }
+  @else {
+    $rtn: ($value);
+    @for $i from 1 to (length($set) + 1) {
+      $rtn: SetPush($rtn, nth($set, $i));
+    }
+  }
+  @return $rtn;
+}
+
+/// Pop a value off a set and return the value or set.
+/// Note this function should be used like this if you want the value:
+/// $value: SetPop($set, true); $set: SetPop($set);
+/// @param $set The set to manipulate.
+/// @param $value false to return the value (default) or true for the value.
+@function SetPop($set, $value:false) {
+  $rtn: null;
+  @if $value {
+    $rtn: nth($set, length($set));
+  }
+  @else {
+    @if length($set) > 1 {
+      $rtn: ();
+      @for $i from 1 to length($set) {
+        $rtn: SetPush($rtn, nth($set, $i));
+      }
+    }
+    @else {
+      $rtn: null;
+    }
+  }
+  @return $rtn;
+}
+
+/// Shift a value off a set and return the value or set.
+/// Note this function should be used like this if you want the value:
+/// $value: SetShift($set, true); $set: SetShift($set);
+/// @param $set The set to manipulate.
+/// @param $value false to return the value (default) or true for the value.
+@function SetShift($set, $value:false) {
+  $rtn: null;
+  @if $value {
+    $rtn: nth($set, 1);
+  }
+  @else {
+    @if length($set) > 1 {
+      $rtn: ();
+      @for $i from 2 to (length($set) + 1) {
+        $rtn: SetPush($rtn, nth($set, $i));
+      }
+    }
+    @else {
+      $rtn: null;
+    }
+  }
+  @return $rtn;
+}

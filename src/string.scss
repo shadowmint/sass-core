@@ -2,11 +2,14 @@
 $__coreStrWS: " \t";
 
 /// Join a sequence of strings into one string
-/// @param $values The set of strings, eg. StrJoin("1", "2", "3")
-@function StrJoin($values...) {
+/// @param $values The set of strings, eg. StrJoin(("1", "2", "3"))
+/// @param $delim The string delimiter
+@function StrJoin($values, $delim:"") {
   $rtn: "";
+  $offset: 0;
   @each $value in $values {
-    $rtn: "#{$rtn}#{$value}";
+    $rtn: "#{$rtn}#{$delim}#{$value}";
+    $offset: $offset + 1;
   }
   @return unquote($rtn);
 }
