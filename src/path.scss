@@ -5,28 +5,36 @@
 /// @param $path A path, eg. "foo/bar/thing.scss"
 /// @return The path component, eg. "foo/bar"
 @function PathDir($path) {
-  @debug $path;
   $parts: StrSplit($path, "/");
-  @debug($parts);
   $parts: SetPop($parts);
-  @debug($parts);
-  @debug(length($parts));
   @return StrJoin($parts, "/");
 }
 
 /// Given a path, return the file part
 /// @param $path A path, eg. "foo/bar/thing.scss"
-/// @param $withExt Return the extension too, defaults to true.
 /// @return The file component, eg. "thing.scss" or "thing"
-@function PathFile($path, $withExt) {
-  @return "";
+@function PathFile($path) {
+  $parts: StrSplit($path, "/");
+  @return SetPop($parts, true);
 }
 
-/// Replace the file in a path with a different file / extension
+/// Replace the file in a path with a different file
 /// @param $path A path, eg. "foo/bar/thing.scss"
-/// @param $filename The replacement filename, eg. "foo"
+/// @param $file The replacement extension, eg. "junk.css"
+/// @return The file component, eg. "foo/bar/junk.css"
+@function PathReplaceFile($path, $file) {
+  @return StrJoin((PathDir($path), $file), "/");
+}
+
+/// Replace the file in a path with a different file extension
+/// @param $path A path, eg. "foo/bar/thing.scss"
 /// @param $ext The replacement extension, eg. "css"
 /// @return The file component, eg. "foo/bar/foo.css"
-@function PathReplace($path, $filename, $ext) {
-  @return "";
+@function PathReplaceExt($path, $ext) {
+  $file: PathFile($path);
+  $parts: StrSplit($file, ".");
+  $parts: SetPop($parts);
+  $parts: SetPush($parts, $ext);
+  $file: StrJoin($parts, ".");
+  @return PathReplaceFile($path, $file);
 }

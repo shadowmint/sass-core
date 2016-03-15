@@ -1,5 +1,5 @@
 /// Global variable to represent whitespace
-$__coreStrWS: " \t";
+$__coreStrWS: unquote(" ");
 
 /// Join a sequence of strings into one string
 /// @param $values The set of strings, eg. StrJoin(("1", "2", "3"))
@@ -8,7 +8,12 @@ $__coreStrWS: " \t";
   $rtn: "";
   $offset: 0;
   @each $value in $values {
-    $rtn: "#{$rtn}#{$delim}#{$value}";
+    @if $offset == 0 {
+      $rtn: "#{$value}";
+    }
+    @else {
+      $rtn: "#{$rtn}#{$delim}#{$value}";
+    }
     $offset: $offset + 1;
   }
   @return unquote($rtn);
@@ -40,10 +45,15 @@ $__coreStrWS: " \t";
 /// @param $value The value to trim, eg. "   1 "
 /// @return The trimmed valued, eg. "1 "
 @function StrLTrim($value) {
-  $i: 0;
+  $i: 1;
   $offset: 0;
   $end: str-length($value);
   $done: false;
+  $rtn: "";
+  @if str-length($value) == 0 {
+    $offset: 0;
+    $done: true;
+  }
   @while not $done {
     $part: str-slice($value, $i, $i);
     $index: str-index($__coreStrWS, $part);
@@ -51,11 +61,14 @@ $__coreStrWS: " \t";
       $offset: $i;
       $done: true;
     }
-    @if $i == $end {
-      $done: true;
-    }
     @else {
-      $i: $i + 1;
+      @if $i == $end {
+        $done: true;
+        $offset: $i + 1;
+      }
+      @else {
+        $i: $i + 1;
+      }
     }
   }
   @return str-slice($value, $offset);
@@ -66,7 +79,7 @@ $__coreStrWS: " \t";
 /// @return The trimmed valued, eg. "   1"
 @function StrRTrim($value) {
   $i: str-length($value);
-  $offset: 0;
+  $offset: 1;
   $end: 0;
   $done: false;
   @while not $done {
@@ -77,6 +90,7 @@ $__coreStrWS: " \t";
       $done: true;
     }
     @if $i == $end {
+      $offset: 0;
       $done: true;
     }
     @else {

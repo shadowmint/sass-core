@@ -14,23 +14,41 @@
 @function test_str_ltrim() {
   $setup: Test(test_str_ltrim);
 
-  $trimmed: StrLTrim("foo");
-  $test: Assert($trimmed == "foo");
+  $trimmed: StrLTrim("   ");
+  $test: Assert($trimmed == "");
 
-  $trimmed: StrLTrim("foo   ");
-  $test: Assert($trimmed == "foo   ");
+  $trimmed: StrLTrim("");
+  $test: Assert($trimmed == "");
 
-  $trimmed: StrLTrim("    foo");
-  $test: Assert($trimmed == "foo");
+  $trimmed: StrLTrim("thing.txt");
+  $test: Assert($trimmed == "thing.txt");
 
-  $trimmed: StrLTrim("  \tfoo\t   ");
-  $test: Assert($trimmed == "foo\t   ");
+  $trimmed: StrLTrim("f");
+  $test: Assert($trimmed == "f");
+
+  $trimmed: StrLTrim("thing   ");
+  $test: Assert($trimmed == "thing   ");
+
+  $trimmed: StrLTrim("    thing");
+  $test: Assert($trimmed == "thing");
+
+  $trimmed: StrLTrim("  thing   ");
+  $test: Assert($trimmed == "thing   ");
 
   @return TestEnd();
 }
 
 @function test_str_rtrim() {
   $setup: Test(test_str_rtrim);
+
+  $trimmed: StrRTrim("   ");
+  $test: Assert($trimmed == "");
+
+  $trimmed: StrRTrim("");
+  $test: Assert($trimmed == "");
+
+  $trimmed: StrRTrim("f");
+  $test: Assert($trimmed == "f");
 
   $trimmed: StrRTrim("foo");
   $test: Assert($trimmed == "foo");
@@ -41,8 +59,8 @@
   $trimmed: StrRTrim("    foo");
   $test: Assert($trimmed == "    foo");
 
-  $trimmed: StrRTrim("  \tfoo\t   ");
-  $test: Assert($trimmed == "  \tfoo");
+  $trimmed: StrRTrim("  foo   ");
+  $test: Assert($trimmed == "  foo");
 
   @return TestEnd();
 }
@@ -50,8 +68,8 @@
 @function test_str_trim() {
   $setup: Test(test_str_trim);
 
-  $trimmed: StrTrim("foo");
-  $test: Assert($trimmed == "foo");
+  $trimmed: StrTrim("thing.txt");
+  $test: Assert($trimmed == "thing.txt");
 
   $trimmed: StrTrim("foo   ");
   $test: Assert($trimmed == "foo");
@@ -59,7 +77,7 @@
   $trimmed: StrTrim("    foo");
   $test: Assert($trimmed == "foo");
 
-  $trimmed: StrTrim("  \tfoo\t   ");
+  $trimmed: StrTrim("  foo   ");
   $test: Assert($trimmed == "foo");
 
   @return TestEnd();
@@ -86,9 +104,22 @@
   @return TestEnd();
 }
 
+@function test_str_split_complex() {
+  $setup: Test(test_str_split);
+
+  $split: StrSplit("/one/two/three.txt", "/");
+  $test: Assert(nth($split, 1) == "");
+  $test: Assert(nth($split, 2) == "one");
+  $test: Assert(nth($split, 3) == "two");
+  $test: Assert(nth($split, 4) == "three.txt");
+
+  @return TestEnd();
+}
+
 @debug test_str_rtrim();
 @debug test_str_ltrim();
 @debug test_str_trim();
 @debug test_str_join();
 @debug test_str_split();
+@debug test_str_split_complex();
 @debug TestSuiteEnd();

@@ -6,11 +6,55 @@
   $setup: Test(test_path_dir);
 
   $out: PathDir("foo/bar/thing.txt");
-  @debug $out;
   $test: Assert($out == "foo/bar");
+
+  $out: PathDir("/foo/bar/thing.txt");
+  $test: Assert($out == "/foo/bar");
 
   @return TestEnd();
 }
 
+@function test_path_file() {
+  $setup: Test(test_path_file);
+
+  $out: PathFile("foo/bar/thing.txt");
+  $test: Assert($out == "thing.txt");
+
+  $out: PathFile("/foo/bar/");
+  $test: Assert($out == "");
+
+  $out: PathFile("/foo/bar");
+  $test: Assert($out == "bar");
+
+  @return TestEnd();
+}
+
+@function test_replace_ext() {
+  $setup: Test(test_replace_ext);
+
+  $out: PathReplaceExt("foo/bar/thing.txt", "css");
+  $test: Assert($out == "foo/bar/thing.css");
+
+  $out: PathReplaceExt("foo/bar/thing.foo.txt", "css");
+  $test: Assert($out == "foo/bar/thing.foo.css");
+
+  @return TestEnd();
+}
+
+@function test_replace_file() {
+  $setup: Test(test_replace_file);
+
+  $out: PathReplaceFile("foo/bar/thing.txt", "foo.txt");
+  $test: Assert($out == "foo/bar/foo.txt");
+
+  $out: PathReplaceFile("foo/bar/thing.foo.txt", "foo.css");
+  $test: Assert($out == "foo/bar/foo.css");
+
+  @return TestEnd();
+}
+
+@debug test_replace_ext();
+@debug test_replace_file();
 @debug test_path_dir();
+@debug test_path_file();
 @debug TestSuiteEnd();
